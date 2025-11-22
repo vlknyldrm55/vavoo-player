@@ -2,22 +2,30 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Vavoo Player</title>
+  <title>Vavoo Test Player</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-  <h2>Vavoo Test Player</h2>
+  <h2>Vavoo .m3u8 Test Player</h2>
+  <input type="text" id="streamUrl" placeholder="m3u8 linkini buraya yapıştır" size="80">
+  <button onclick="playStream()">Oynat</button>
+  <br><br>
   <video id="video" controls autoplay width="640" height="360"></video>
 
   <script>
-    if (Hls.isSupported()) {
+    function playStream() {
+      var streamUrl = document.getElementById('streamUrl').value;
       var video = document.getElementById('video');
-      var hls = new Hls();
-      // Buraya kendi m3u8 linkini koy
-      hls.loadSource("https://vavoo.to/play/XXXX/index.m3u8");
-      hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = "https://vavoo.to/play/XXXX/index.m3u8";
+
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(streamUrl);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = streamUrl;
+      } else {
+        alert("Tarayıcınız HLS desteklemiyor.");
+      }
     }
   </script>
 </body>
